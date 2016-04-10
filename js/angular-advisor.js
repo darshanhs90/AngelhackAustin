@@ -31,7 +31,13 @@ app.controller('myCtrl',function($scope,$http) {
 
         }
     }
-
+    $(document).on('mouseenter', '.divbutton', function () {
+        $(this).find(":button").show();
+        $(this).find("div").show();
+    }).on('mouseleave', '.divbutton', function () {
+        $(this).find(":button").hide();
+         $(this).find("div").hide();
+    });
     /*$("div.star-rating > s, div.star-rating-rtl > s").on("click", function(e) {
         var numStars = $(e.target).parentsUntil("div").length+1;
         alert(numStars + (numStars == 1 ? " star" : " stars!"));
