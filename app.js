@@ -66,14 +66,23 @@ app.get('/analyzeSentiment',function(reqst,respns){
 	}, data);
 });
 
-
+app.get('/analyzeSentimentalAnalysis',function(reqst,respns){
+	var data = {'text' : reqst.query.sentiment};
+	console.log(sentimentText);
+	client.call('analyzesentiment', function(err,resp,body){
+		respns.send(body);
+		respns.end();
+	}, data);
+});
 
 var text='';
 app.get('/extracttext',function(reqst,respns){
-	data={'file':'./res.pdf'}
+	data={'file':'./resume.pdf'}
 	client.call('extracttext', function(err,resp,body){
 		respns.send(body);
 		text=body.document[0].content;
+		text=text.replace('(123)456-7890','4697672278');
+		text=text.replace('JNTUH','University of Texas');
 		respns.end();
 	}, data)
 
@@ -131,7 +140,7 @@ app.get('/conceptExtraction',function(reqst,respns){
 });
 
 app.get('/extractentities',function(reqst,respns){
-	data={'text':text,'entity_type':['companies_eng','organizations','places_eng','professions','universities','person_fullname_eng','number_phone_us','internet','internet_email']}
+	data={'text':text,'entity_type':['person_name_component_eng','address_us','people_eng','companies_eng','organizations','places_eng','professions','universities','person_fullname_eng','number_phone_us','languages','internet','internet_email']}
 	client.call('extractentities', function(err,resp,body){
 		respns.send(body);
 		respns.end();

@@ -9,81 +9,124 @@ app.controller('myCtrl',function($scope,$http) {
 		else
 			$scope.form=true;
 	}    
-
+	$scope.resumeContent='';
+	$scope.valShow=1;
+	$scope.parsedAddress='',$scope.parsedExperience='',$scope.parsedMail='',$scope.parsedName='',$scope.parsedPhone='';
+	$scope.parsedGre='',$scope.parsedToefl='';
 	$scope.uploadResume=function(){
 		$('#bnResume').toggleClass('active');
+		$scope.resumeContent='';
+		$scope.conceptsExtracted='';
+		$scope.entitiesExtracted='';
+		setTimeout(function(){ 
+			$('#bnResume').toggleClass('active'); 
+			$scope.valShow=2;
+			$http.get('http://localhost:1337/extracttext').success(function(res){
+				$scope.resumeContent=(res.document[0].content);
+				console.log($scope.resumeContent);
+				$http.get('http://localhost:1337/conceptExtraction').success(function(res){
+					console.log(res);
+					$scope.conceptsExtracted=(res);
+					$http.get('http://localhost:1337/extractentities').success(function(res){
+						console.log(res);
+						$scope.entitiesExtracted=(res.entities);
+						$("#btnmodal").click();
+						for (var i = 0; i <$scope.entitiesExtracted.length; i++) {
+							if($scope.entitiesExtracted[i].type=='companies_eng' && $scope.parsedExperience==''){
+								$scope.parsedExperience=$scope.entitiesExtracted[i].normalized_text;
+							}else if($scope.entitiesExtracted[i].type=='places_eng' && $scope.parsedAddress==''){
+								$scope.parsedAddress=$scope.entitiesExtracted[i].normalized_text;
+							}else if($scope.entitiesExtracted[i].type=='person_fullname_eng' && $scope.parsedName==''){
+								$scope.parsedName=$scope.entitiesExtracted[i].normalized_text;
+							}else if($scope.entitiesExtracted[i].type=='internet_email' && $scope.parsedMail==''){
+								$scope.parsedMail=$scope.entitiesExtracted[i].normalized_text;
+							}else if($scope.entitiesExtracted[i].type=='number_phone_us' && $scope.parsedPhone==''){
+								$scope.parsedPhone=$scope.entitiesExtracted[i].normalized_text;
+							}
+						}	
 
-		setTimeout(function(){ $('#bnResume').toggleClass('active'); }, 3000);
+					})
+				})
+					$scope.tempText=$scope.resumeContent.split("GRE Score: ");
+					$scope.tempText1=$scope.resumeContent.split("TOEFL Score: ");
+					$scope.parsedGre=($scope.tempText[1].substring(0,4));
+					$scope.parsedToefl=($scope.tempText1[1].substring(0,4));
+			})
+
+
+		}, 3000);
 	}
 	$scope.submitDetails=function(){
-		alertify.success('submitted succesfully');
+		alertify.success('Saved succesfully');
 	}
 	$scope.rating=3;
 	$scope.getClass=function($val)
 	{
-	 switch($val){
-		case '0':return $scope.rating>0?"rated":"";break;
-		case '1':return $scope.rating>1?'rated':'';break;
-		case '2':return $scope.rating>2?'rated':'';break;
-		case '3':return $scope.rating>3?'rated':'';break;
-		case '4':return $scope.rating>4?'rated':'';break;
-		default:break;
+		switch($val){
+			case '0':return $scope.rating>0?"rated":"";break;
+			case '1':return $scope.rating>1?'rated':'';break;
+			case '2':return $scope.rating>2?'rated':'';break;
+			case '3':return $scope.rating>3?'rated':'';break;
+			case '4':return $scope.rating>4?'rated':'';break;
+			default:break;
+
+		}
+	}
+
+
+	$scope.collegenames=["Alabama State University",
+	"Boston University",
+	"California Institue of Technology",
+	"Dartmouth University",
+	"SUNY at Binghamton",
+	"The University of Texas at Arlington",
+	"The University of Texas at Austin",
+	"The University of Texas at Dallas",
+	"The University of Texas at San Antonio",
+	"University of British Columbia",
+	"University of California-Berkeley",
+	"University of Colorado Boulder",
+	"University of Maryland-College Park",
+	"University of Minnesota-Twin Cities",
+	"University of North Florida",
+	"University of Waterloo",
+	"Virginia Polytechnic Institute and State University",
+	"Washington State University",
+	"Zane State College"];
+
+	$(document).on('mouseenter', '.divbutton', function () {
+		$(this).find(":button").show();
+		$(this).find("div").show();
+	}).on('mouseleave', '.divbutton', function () {
+		$(this).find(":button").hide();
+		$(this).find("div").hide();
+	});
+
+	$scope.getList=function(){
 
 	}
-}
 
-
-$scope.collegenames=["Alabama State University",
-"Boston University",
-"California Institue of Technology",
-"Dartmouth University",
-"SUNY at Binghamton",
-"The University of Texas at Arlington",
-"The University of Texas at Austin",
-"The University of Texas at Dallas",
-"The University of Texas at San Antonio",
-"University of British Columbia",
-"University of California-Berkeley",
-"University of Colorado Boulder",
-"University of Maryland-College Park",
-"University of Minnesota-Twin Cities",
-"University of North Florida",
-"University of Waterloo",
-"Virginia Polytechnic Institute and State University",
-"Washington State University",
-"Zane State College"];
-
-$(document).on('mouseenter', '.divbutton', function () {
-	$(this).find(":button").show();
-	$(this).find("div").show();
-}).on('mouseleave', '.divbutton', function () {
-	$(this).find(":button").hide();
-	$(this).find("div").hide();
-});
-
-$scope.getList=function(){
-
-}
-
-$scope.users=[];
-$scope.users.push({'id':'0','name':'Darshan0','university':'UT Dallas0','rating':'4','reviews':'fdfghjjkkl0','img':'images/darshan.jpg'})
-$scope.users.push({'id':'1','name':'Darshan1','university':'UT Dallas1','rating':'3','reviews':'fdfghjjkkl1','img':'images/newone.jpg'})
-$scope.users.push({'id':'2','name':'Darshan2','university':'UT Dallas2','rating':'5','reviews':'fdfghjjkkl2','img':'images/sreesha.jpg'})
-$scope.users.push({'id':'3','name':'Darshan3','university':'UT Dallas3','rating':'2','reviews':'fdfghjjkkl3','img':'images/newone2.jpg'})
-$scope.users.push({'id':'4','name':'Darshan4','university':'UT Dallas4','rating':'5','reviews':'fdfghjjkkl4','img':'images/shivu.jpg'})
-$scope.users.push({'id':'5','name':'Darshan5','university':'UT Dallas5','rating':'4','reviews':'fdfghjjkkl5','img':'images/bhargavi.jpg'})
+	$scope.users=[];
+	$scope.users.push({'id':'0','name':'Sreesha N','university':'UT Dallas','rating':'4','reviews':'I am really annoyed with your poor performance recently','img':'images/darshan.jpg'})
+	$scope.users.push({'id':'1','name':'Darshan HS','university':'UT Dallas','rating':'3','reviews':'Hey, good job with that thing you did recently','img':'images/newone.jpg'})
+	$scope.users.push({'id':'2','name':'Bhargavi R','university':'UT Dallas','rating':'5','reviews':'I am really annoyed with your poor performance recently','img':'images/sreesha.jpg'})
+	$scope.users.push({'id':'3','name':'Shivu G','university':'UT Dallas','rating':'2','reviews':'Hey, good job with that thing you did recently','img':'images/newone2.jpg'})
+	$scope.users.push({'id':'4','name':'Ritu P','university':'UT Dallas','rating':'5','reviews':'I am really annoyed with your poor performance recently','img':'images/shivu.jpg'})
+	$scope.users.push({'id':'5','name':'NoName','university':'UT Dallas','rating':'4','reviews':'Hey, good job with that thing you did recently','img':'images/bhargavi.jpg'})
 
 
 
-$scope.openModal=function($val)
-{   
-	$scope.avg='';
-	$scope.user=$scope.users[$val];
-	$("#btnmodal").click();
-}
-$scope.getAvgReviewScore=function($val){
-		//make sentiment analysis of review
-		$scope.avg=$val;
+	$scope.openModal=function($val)
+	{   
+		$scope.valShow=1;
+		$scope.avg='';
+		$scope.user=$scope.users[$val];
+		$("#btnmodal").click();
+	}
+	$scope.getAvgReviewScore=function($val){
+		$http.get('http://localhost:1337/analyzeSentimentalAnalysis?sentiment='+$scope.users[$val].reviews).success(function(res){
+			$scope.avg=res.aggregate.score;
+		});
 	}
 
 	/*$("div.star-rating > s, div.star-rating-rtl > s").on("click", function(e) {
