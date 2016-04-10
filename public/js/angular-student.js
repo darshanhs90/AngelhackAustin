@@ -129,6 +129,15 @@ app.controller('myCtrl',function($scope,$http) {
 		});
 	}
 
+	$scope.makeVideoCall=function($val){
+		$http.get('http://localhost:1337/sendPushBullet?name='+$scope.users[$val].name).success(function(res){
+			alertify.success('Advisor Alerted');
+			setTimeout(function(){
+				window.location.href='https://opentokrtctestdemo.herokuapp.com/demo';
+			},2000);
+		});
+
+	}
 	/*$("div.star-rating > s, div.star-rating-rtl > s").on("click", function(e) {
 		var numStars = $(e.target).parentsUntil("div").length+1;
 		alert(numStars + (numStars == 1 ? " star" : " stars!"));

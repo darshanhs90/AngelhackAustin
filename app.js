@@ -3,6 +3,8 @@ var express = require('express');
 var cfenv = require('cfenv');
 var cors = require('cors');
 var app = express();
+var PushBullet = require('pushbullet');
+var pusher = new PushBullet('Xej3VrcULqqRjo7SPkl7WJsaTkFTao8E');
 var bodyParser = require('body-parser');
 app.use(cors());
 app.use(express.static(__dirname + '/public'));
@@ -19,6 +21,8 @@ var fpp = require('face-plus-plus');
 fpp.setApiKey('b5e783aaf612ece56decaf2ae5e6f8c8');
 fpp.setApiSecret('lI2k8MecfCg9jExmgTz4JcapfOj1MSP1');
 var jobId;
+
+
 
 app.listen(1337, '127.0.0.1', function() {
 	console.log("server starting on " + 1337);
@@ -107,7 +111,7 @@ app.get('/analyzeSpeech',function(reqst,respns){
 		console.log(body);
 		jobId=body.data.jobID;
 		respns.send(body);
-		fs.unlinkSync('./public/recordrtc-nodejs/uploads/Test.wav');
+		//fs.unlinkSync('./public/recordrtc-nodejs/uploads/Test.wav');
 		respns.end();
 	}, data,true)
 });
@@ -144,5 +148,13 @@ app.get('/extractentities',function(reqst,respns){
 		respns.send(body);
 		respns.end();
 	}, data)
-
 });
+
+
+app.get('/sendPushBullet',function(reqst,respns){
+	var name=reqst.query.name;
+	pusher.note('ujxoVhoOrjosjz7O3P0Jl6', 'UniConnect', 'You\'ve got a video call request from '+name+".Navigate to https://opentokrtctestdemo.herokuapp.com/demo to join the video call", function(error, response) {
+                    
+                    respns.end();});
+});
+
