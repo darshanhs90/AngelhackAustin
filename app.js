@@ -14,7 +14,8 @@ var parseString = require('xml2js').parseString;
 
 var hod = require('havenondemand');
 var request=require('request');
-var apikey='f3129194-4f03-4419-80c2-f3aa041baf9a';
+//var apikey='f3129194-4f03-4419-80c2-f3aa041baf9a';
+var apikey='f9e927d7-6497-4dee-9f69-5500fb76a5ad';
 var client = new hod.HODClient('http://api.idolondemand.com', apikey);
 var fs=require("fs");
 var fpp = require('face-plus-plus');
@@ -150,11 +151,21 @@ app.get('/extractentities',function(reqst,respns){
 	}, data)
 });
 
-
+//ujyob53T1uSsjz7O3P0Jl6
+//ujxoVhoOrjosjz7O3P0Jl6
 app.get('/sendPushBullet',function(reqst,respns){
 	var name=reqst.query.name;
 	pusher.note('ujxoVhoOrjosjz7O3P0Jl6', 'UniConnect', 'You\'ve got a video call request from '+name+".Navigate to https://opentokrtctestdemo.herokuapp.com/demo to join the video call", function(error, response) {
                     
                     respns.end();});
 });
+
+app.get('/predictor',function(reqst,respns){
+	var data = {'file' : 'test.csv','service_name':'Suggest'};
+  client.call('predict', function(err,resp,body){
+    respns.send(body);
+  }, data);
+});
+
+
 

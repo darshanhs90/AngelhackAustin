@@ -103,7 +103,11 @@ app.controller('myCtrl',function($scope,$http) {
 	});
 
 	$scope.getList=function(){
-		window.location.href="student-index.html#work"
+		
+
+		window.location.href="student-index.html#work";
+
+		
 	}
 
 	$scope.users=[];
