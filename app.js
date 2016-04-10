@@ -31,7 +31,7 @@ app.get('/fppCheck',function(reqst,respns){
 		img : {
 			//value: fs.readFileSync('../../../EHARIHS/Downloads/test.jpg')
 			value: fs.readFileSync('/Users/Darshan/Downloads/test.png')
-			, meta: {filename:'test.jpg'}
+			, meta: {filename:'test.png'}
 		}
 	};
 	fpp.post('detection/detect', parameters, function(err, res) {
@@ -46,12 +46,11 @@ app.get('/fppCheck',function(reqst,respns){
 
 
 app.get('/facedetectCheck',function(reqst,respns){
-
 	//data={'file':'../../../EHARIHS/Downloads/test.jpg',	'additional':'true'}
 	data={'file':'/Users/Darshan/Downloads/test.png',	'additional':'true'}
-
 	client.call('detectfaces', function(err,resp,body){
 		respns.send(body);
+		//fs.unlinkSync('/Users/Darshan/Downloads/test.png');
 		respns.end();
 	}, data)
 });

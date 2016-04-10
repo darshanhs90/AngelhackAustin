@@ -187,6 +187,7 @@ function RecordRTC(mediaStream, config) {
             }
 
             getDataURL(function(dataURL) {
+                console.log(dataURL);
                 var parameter = {};
                 parameter[config.type + 'Blob'] = dataURL;
                 DiskStorage.Store(parameter);

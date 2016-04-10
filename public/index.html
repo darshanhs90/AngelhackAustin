@@ -118,8 +118,8 @@
 		<nav id="nav">
 			<ul>
 				<li><a href="#intro">Intro</a></li>
-				<li><a href="#one">What I Do</a></li>
-				<li><a href="#two">Who I Am</a></li>
+				<li><a href="#one">Sign Up</a></li>
+				<li><a href="#two">Rating Calculator</a></li>
 				<li><a href="#work">My Work</a></li>
 				<li><a href="#contact">Contact</a></li>
 			</ul>
@@ -239,29 +239,11 @@
 			<a href="#two" class="button style2 down anchored">Next</a>
 		</section>
 
-		<!-- Two -->
-
-
-
-		<!--<section id="two" class="main style2 left dark fullscreen">
-			<div class="content box style2">
-				<header>
-					<h2 ng-click="">Get your Rating</h2>
-				</header>
-				<p>
-					<div>
-						<div class="star-rating"><s ng-class="getClass('0')" ><s ng-class="getClass('1')"><s ng-class="getClass('2')"><s ng-class="getClass('3')"><s ng-class="getClass('4')"></s></s></s></s></s></div>
-					</div>
-				</p>
-				</div>
-				<a href="#work" class="button style2 down anchored">Next</a>
-			</section>-->
-
     <!-- Two -->
     <section id="two" class="main style2 left dark fullscreen">
         <div class="content box style2" ng-show="!vidcam">
         	<header >
-					<h2 ng-click="showVidCam()">Get your Rating</h2>
+					<h2 ng-click="showVidCam()">{{ratingText}}</h2>
 			</header>
 			<p >
 				<div>
@@ -278,6 +260,7 @@
             <p>
                 <button id="btn-start-recording" ng-click="take_snapshot()">Start Recording</button>
                 <button id="btn-stop-recording" disabled="">Stop Recording</button>
+                <button  class="btn btn-info" ng-click="computeRating()">Compute Rating</button>
             </p>
         </div>
         <div class="content style2" id="my_camera" ng-show="vidcam">
@@ -285,7 +268,6 @@
         <canvas ng-show="false" id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;" ng-show="vidcam">
             Your browser does not support the HTML5 canvas tag.
         </canvas>
-        <script src="js/frameworks/angular.min.js"></script>
         <script type="text/javascript" src="recordrtc-nodejs/static/app.js"></script>
         <script type="text/javascript" src="recordrtc-nodejs/static/src/js/RecordRTC.js"></script>
         <script type="text/javascript" src="recordrtc-nodejs/static/src/js/FileSaver.js"></script>
@@ -425,7 +407,7 @@
                         blob: audioRecorder.getBlob(),
                         dataURL: audioDataURL
                     };
-
+                    console.log(audio);
                     // if record both wav and webm
                     if (!isRecordOnlyAudio) {
                         videoRecorder.getDataURL(function(videoDataURL) {
@@ -433,7 +415,7 @@
                                 blob: videoRecorder.getBlob(),
                                 dataURL: videoDataURL
                             };
-
+                            
                             postFiles(audio, video);
                         });
                     }
@@ -470,7 +452,7 @@
 
                     videoElement.src = window.URL.createObjectURL(stream);
                     videoElement.play();
-                    videoElement.muted = true;
+                    videoElement.muted = false;
                     videoElement.controls = false;
 
                     // it is second parameter of the RecordRTC
@@ -504,7 +486,6 @@
             btnStopRecording.onclick = function() {
                 btnStartRecording.disabled = false;
                 btnStopRecording.disabled = true;
-
                 if (isRecordOnlyAudio) {
                     audioRecorder.stopRecording(onStopRecording);
                 }

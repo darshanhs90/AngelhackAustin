@@ -88,40 +88,10 @@
         Webcam.attach('#my_camera');
     </script>
 
-    <!-- A button for taking snaps -->
-    <!-- <form>
-        <input type=button value="Take Snapshot" onClick="take_snapshot()">
-    </form> -->
-
-    <!-- Code to handle taking the snapshot and displaying it locally -->
-    <!-- <script language="JavaScript">
-        function take_snapshot() {
-            // take snapshot and get image data
-            Webcam.snap(function() {
-                
-            }, myCanvas);
-            var canvas = document.getElementById("myCanvas");
-            // draw to canvas...
-            canvas.toBlob(function(blob) {
-                saveAs(blob, "pretty image.png");
-            });
-        }
-    </script> -->
-
-
-    <h1><a href="https://github.com/muaz-khan/WebRTC-Experiment/tree/master/RecordRTC">RecordRTC</a> <a href="https://github.com/muaz-khan/WebRTC-Experiment/tree/master/RecordRTC/RecordRTC-to-Nodejs">over Node.js</a></h1>
     <p>
         <video></video>
     </p>
-    <hr />
 
-    <div>
-        <label id="percentage">0%</label>
-        <progress id="progress-bar" value=0></progress>
-        <br />
-    </div>
-
-    <hr />
 
     <div>
         <button id="btn-start-recording" ng-click="take_snapshot()">Start Recording</button>
@@ -196,7 +166,7 @@
             videoElement.src = '';
             videoElement.poster = '/ajax-loader.gif';
 
-            xhr('/upload', JSON.stringify(files), function(_fileName) {
+            xhr('http://localhost:8000/upload', JSON.stringify(files), function(_fileName) {
                 var href = location.href.substr(0, location.href.lastIndexOf('/') + 1);
                 videoElement.src = href + 'uploads/' + _fileName;
                 videoElement.play();
@@ -220,16 +190,6 @@
                 }
             };
 
-            request.upload.onprogress = function(event) {
-                progressBar.max = event.total;
-                progressBar.value = event.loaded;
-                progressBar.innerHTML = 'Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%";
-            };
-
-            request.upload.onload = function() {
-                percentage.style.display = 'none';
-                progressBar.style.display = 'none';
-            };
             request.open('POST', url);
             request.send(data);
         }
@@ -352,9 +312,7 @@
             startRecording.disabled = false;
         };
     </script>
-    <footer style="width:100%;position: fixed; right: 0; text-align: center;color:red;">
-        <a href="https://www.WebRTC-Experiment.com">www.WebRTC-Experiment.com</a>
-    </footer>
+
 </body>
 
 </html>

@@ -14,7 +14,7 @@ angular.module("app", [])
             var canvas = document.getElementById("myCanvas");
             // draw to canvas...
             canvas.toBlob(function(blob) {
-                saveAs(blob, "pretty image.png");
+                saveAs(blob, "test.png");
             });
         }
 });
