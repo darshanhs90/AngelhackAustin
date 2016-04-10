@@ -103,11 +103,11 @@ app.controller('myCtrl',function($scope,$http) {
 	});
 
 	$scope.getList=function(){
-		
+
 
 		window.location.href="student-index.html#work";
 
-		
+
 	}
 
 	$scope.users=[];
@@ -117,14 +117,23 @@ app.controller('myCtrl',function($scope,$http) {
 	$scope.users.push({'id':'3','name':'Shivu G','university':'UT Dallas','rating':'2','reviews':'Hey, good job with that thing you did recently','img':'images/newone2.jpg'})
 	$scope.users.push({'id':'4','name':'Ritu P','university':'UT Dallas','rating':'5','reviews':'I am really annoyed with your poor performance recently','img':'images/shivu.jpg'})
 	$scope.users.push({'id':'5','name':'NoName','university':'UT Dallas','rating':'4','reviews':'Hey, good job with that thing you did recently','img':'images/bhargavi.jpg'})
-
-
+	$scope.usersNew='';
+	$scope.userRating='';
+		$scope.userUniv='';
+		$scope.userName='';
+	$http.get('http://localhost:1337/predictor').success(function(res){
+			$scope.usersNew=res.values;
+			console.log($scope.usersNew);
+	});
 
 	$scope.openModal=function($val)
 	{   
 		$scope.valShow=1;
 		$scope.avg='';
 		$scope.user=$scope.users[$val];
+		$scope.userRating=$scope.usersNew[$val].row[5];
+		$scope.userUniv=$scope.usersNew[$val].row[3];
+		$scope.userName=$scope.usersNew[$val].row[7];
 		$("#btnmodal").click();
 	}
 	$scope.getAvgReviewScore=function($val){

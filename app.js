@@ -161,7 +161,7 @@ app.get('/sendPushBullet',function(reqst,respns){
 });
 
 app.get('/predictor',function(reqst,respns){
-	var data = {'file' : 'test.csv','service_name':'Suggest'};
+	var data = {'file' : 'test2.csv','service_name':'Suggest'};
   client.call('predict', function(err,resp,body){
     respns.send(body);
   }, data);

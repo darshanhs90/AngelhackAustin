@@ -1,0 +1,8 @@
+Language,Undergrad_University ,Undergrad_Specialization ,Grad_University ,Grad_Specialization ,Ratings,Advisee
+RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,INTEGER,RICH_TEXT
+Telugu,JNTUH,music,The University of Texas at Dallas,music,5,-1
+Hindi,Viseswarya Technological University,Mechanical Engineering,The University of Texas at Dallas,Mechanical Engineering,5,-1
+Kannada,NCUE,Electrical Engineering,The University of Texas at Dallas,Electrical Engineering,3,-1
+English,cusat,Computer Science,The University of Texas at Dallas,Computer Science,4,-1
+gujarati,NCUE,Electrical Engineering,The University of Texas at Dallas,Electrical Engineering,2,-1
+tamil,Weatherford College,photography,The University of Texas at Dallas,photography,5,-1
