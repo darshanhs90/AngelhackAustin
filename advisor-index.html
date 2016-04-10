@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<!--
+	Big Picture by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html ng-app="myApp" ng-controller="myCtrl">
+<head>
+	<title>Unifinder-Advisor</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/alertify.core.css" />
+	<link rel="stylesheet" href="css/alertify.default.css" />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.css" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/alertify.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.js"></script>
+	
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-advisor.js"></script>
+	<style>
+	.spinner {
+		display: inline-block;
+		opacity: 0;
+		max-width: 0;
+
+		-webkit-transition: opacity 0.25s, max-width 0.45s; 
+		-moz-transition: opacity 0.25s, max-width 0.45s;
+		-o-transition: opacity 0.25s, max-width 0.45s;
+		transition: opacity 0.25s, max-width 0.45s; /* Duration fixed since we animate additional hidden width */
+	}
+
+	.has-spinner.active {
+		cursor:progress;
+	}
+
+	.has-spinner.active .spinner {
+		opacity: 1;
+		max-width: 50px; /* More than it will ever come, notice that this affects on animation duration */
+	}
+
+	.star-rating s:hover {
+    color: red;
+}
+.star-rating-rtl s:hover {
+    color: red;
+}
+
+.star-rating s,
+.star-rating-rtl s {
+    color: black;
+    font-size: 50px;
+    cursor: default;
+    text-decoration: none;
+    line-height: 50px;
+}
+.star-rating {
+    padding: 2px;
+}
+.star-rating-rtl {
+    background: #555;
+    display: inline-block;
+    border: 2px solid #444;
+}
+.star-rating-rtl s {
+    color: yellow;
+}
+.star-rating s:hover:before, .star-rating s.rated:before {
+    content: "\2605";
+}
+.star-rating s:before {
+    content: "\2606";
+}
+.star-rating-rtl s:hover:after, .star-rating-rtl s.rated:after{
+    content: "\2605";
+}
+.star-rating-rtl s:after {
+    content: "\2606";
+}
+
+
+	</style>
+</head>
+<body>
+
+	<!-- Header -->
+	<header id="header">
+
+		<!-- Logo -->
+		<h1 id="logo">Big Picture</h1>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="#intro">Intro</a></li>
+				<li><a href="#one">What I Do</a></li>
+				<li><a href="#two">Who I Am</a></li>
+				<li><a href="#work">My Work</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</nav>
+
+	</header>
+
+	<!-- Intro -->
+	<section id="intro" class="main style1 dark fullscreen">
+		<div class="content container 75%">
+			<header>
+				<h2>Hey.</h2>
+			</header>
+			<p>Welcome to <strong>Big Picture</strong> a responsive site template designed
+				by <a href="http://html5up.net">HTML5 UP</a>, built on <strong><a href="http://getskel.com">Skel</a></strong>,
+				and released for free under the <a href="http://html5up.net/license">Creative Commons Attribution 3.0 license</a>.</p>
+				<footer>
+					<span >Advisor</span>
+					<a href="#one" class="button style2 down" style="transform: rotate(45deg);">More</a><span>&nbsp;&nbsp;&nbsp;</span>
+					<a href="student-index.html#one" class="button style2 down" style="transform: rotate(-45deg);">More</a>
+					<span >Student</span>
+				</footer>
+			</div>
+		</section>
+
+		<!-- One -->
+		<section id="one" class="main style2 right dark fullscreen">
+			<div class="content box style2" style="left:20px;width:1350px;background:transparent">
+				<div style="background:transparent;outline:none;" ng-hide="resume||form">
+					<span style="background:transparent;outline: none;">        <button style="left:700px;" ng-click="showResume(0)" >Upload Resume</button>            <button style="left:200px;" ng-click="showResume(1)" >Fill out your details</button>     </span>
+				</div>
+
+				<div class="fileinput fileinput-new" data-provides="fileinput" ng-show="resume" >
+					<span class="btn btn-default btn-file" style="left:250px;" ><span>Choose file</span><input type="file" /></span>
+					<span class="fileinput-filename" ></span><span class="fileinput-new" style="left:450px;">No file chosen</span>
+
+					<button class="btn-success has-spinner" ng-click="uploadResume()" ng-show="resume" id="bnResume" style="left:450px;" >
+						<span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+						Upload and Parse Resume
+					</button>
+				</div>
+
+				<div ng-show="form" >
+
+					<form class="form-inline">
+						<h5>Personal Info</h5>
+						<div class="form-group">
+							<label for="exampleInputName2">Name</label>
+							<input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">Emailid</label>
+							<input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">Password</label>
+							<input type="password" class="form-control" id="exampleInputEmail2" placeholder="********">
+						</div>
+					</form>
+					<form class="form-inline">
+						<h5>GRE Score</h5>
+						<div class="form-group">
+							<label for="exampleInputName2">Quantitative</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="130-170">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">Verbal</label>
+							<input type="number" class="form-control" id="exampleInputEmail2" placeholder="130-170">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">AWA</label>
+							<input type="number" class="form-control" id="exampleInputEmail2" placeholder="0-6">
+						</div>
+					</form>
+					<form class="form-inline">
+						<h5>Toefl Score</h5>
+						<div class="form-group">
+							<label for="exampleInputName2">Reading</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="0-30">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputName2">Writing</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="0-30">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputName2">Speaking</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="0-30">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputName2">Listening</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="0-30">
+						</div>
+					</form>
+
+					<form class="form-inline">
+						<h5>Most Recent Education Info</h5>
+						<div class="form-group">
+							<label for="exampleInputName2">Degree</label>
+							<input type="text" class="form-control" id="exampleInputName2" placeholder="Bachelors">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputName2">University</label>
+							<input type="text" class="form-control" id="exampleInputName2" placeholder="Annamma University">
+						</div>
+						<span>&nbsp;&nbsp;&nbsp;</span>
+						<div class="form-group">
+							<label for="exampleInputName2">GPA</label>
+							<input type="number" class="form-control" id="exampleInputName2" placeholder="0-4">
+						</div>
+					</form>
+					<br/>
+					<button class="btn btn-submit" ng-click="submitDetails()"> Submit Details</button>
+				</div>
+
+
+			</div>
+			<a href="#two" class="button style2 down anchored">Next</a>
+		</section>
+
+		<!-- Two -->
+		<section id="two" class="main style2 left dark fullscreen">
+			<div class="content box style2">
+				<header>
+					<h2 ng-click="">Get your Rating</h2>
+				</header>
+				<p>
+					<div>
+						<div class="star-rating"><s ng-class="getClass('0')" ><s ng-class="getClass('1')"><s ng-class="getClass('2')"><s ng-class="getClass('3')"><s ng-class="getClass('4')"></s></s></s></s></s></div>
+					</div>
+				</p>
+				</div>
+				<a href="#work" class="button style2 down anchored">Next</a>
+			</section>
+
+			<!-- Work -->
+			<section id="work" class="main style3 primary">
+				<div class="content container">
+					<header>
+						<h2>Students List</h2>
+						</header>
+
+						<!-- Lightbox Gallery  -->
+						<div class="container 75% gallery">
+							<div class="row 0% images">
+								<div class="6u 12u(mobile)"><a href="images/fulls/01.jpg" class="image fit from-left"><img src="images/thumbs/01.jpg" title="The Anonymous Red" alt="" /></a></div>
+								<div class="6u 12u(mobile)"><a href="images/fulls/02.jpg" class="image fit from-right"><img src="images/thumbs/02.jpg" title="Airchitecture II" alt="" /></a></div>
+							</div>
+							<div class="row 0% images">
+								<div class="6u 12u(mobile)"><a href="images/fulls/03.jpg" class="image fit from-left"><img src="images/thumbs/03.jpg" title="Air Lounge" alt="" /></a></div>
+								<div class="6u 12u(mobile)"><a href="images/fulls/04.jpg" class="image fit from-right"><img src="images/thumbs/04.jpg" title="Carry on" alt="" /></a></div>
+							</div>
+							<div class="row 0% images">
+								<div class="6u 12u(mobile)"><a href="images/fulls/05.jpg" class="image fit from-left"><img src="images/thumbs/05.jpg" title="The sparkling shell" alt="" /></a></div>
+								<div class="6u 12u(mobile)"><a href="images/fulls/06.jpg" class="image fit from-right"><img src="images/thumbs/06.jpg" title="Bent IX" alt="" /></a></div>
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+				<!-- Contact -->
+				<section id="contact" class="main style3 secondary">
+					<div class="content container">
+						<header>
+							<h2>Say Hello.</h2>
+							<p>Lorem ipsum dolor sit amet et sapien sed elementum egestas dolore condimentum.</p>
+						</header>
+						<div class="box container 75%">
+
+							<!-- Contact Form -->
+							<form method="post" action="#">
+								<div class="row 50%">
+									<div class="6u 12u(mobile)"><input type="text" name="name" placeholder="Name" /></div>
+									<div class="6u 12u(mobile)"><input type="email" name="email" placeholder="Email" /></div>
+								</div>
+								<div class="row 50%">
+									<div class="12u"><textarea name="message" placeholder="Message" rows="6"></textarea></div>
+								</div>
+								<div class="row">
+									<div class="12u">
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" /></li>
+										</ul>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+
+					<!-- Icons -->
+					<ul class="actions">
+						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+						<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+						<li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					</ul>
+
+					<!-- Menu -->
+					<ul class="menu">
+						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+
+				</footer>
+
+				<!-- Scripts -->
+				<script src="assets/js/jquery.min.js"></script>
+				<script src="assets/js/jquery.poptrox.min.js"></script>
+				<script src="assets/js/jquery.scrolly.min.js"></script>
+				<script src="assets/js/jquery.scrollex.min.js"></script>
+				<script src="assets/js/skel.min.js"></script>
+				<script src="assets/js/util.js"></script>
+				<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+				<script src="assets/js/main.js"></script>
+
+			</body>
+			</html>
